@@ -19,7 +19,7 @@ variable "ipv4_cidr" {
   description = "Static IPv4 address for the instance"
 }
 variable "gateway" {
-  default = "10.9.6.1"
+  description = "Gateway address"
 }
 variable "dns_address" {
   description = "DNS address to use"

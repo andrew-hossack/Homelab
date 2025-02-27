@@ -34,4 +34,5 @@ module "nginx_container" {
   provisioning_commands = local.all_commands
   ssh_private_key       = var.ssh_private_key
   ssh_public_key        = var.ssh_public_key
+  gateway               = var.gateway
 }

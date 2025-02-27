@@ -1,10 +1,11 @@
 module "tailscale_container" {
-  source         = "../container_template"
-  container_name = var.container_name
-  password       = var.password
+  source          = "../container_template"
+  container_name  = var.container_name
+  password        = var.password
   ssh_private_key = var.ssh_private_key
-  ssh_public_key = var.ssh_public_key
-  ipv4_cidr      = var.ipv4_cidr
+  ssh_public_key  = var.ssh_public_key
+  ipv4_cidr       = var.ipv4_cidr
+  gateway         = var.gateway
   provisioning_commands = [
     <<-EOF
     # Add Tailscale’s package signing key and repository:
@@ -24,7 +25,7 @@ module "tailscale_container" {
 }
 
 locals {
-  container_id = split("/",module.tailscale_container.container_id)[2]
+  container_id = split("/", module.tailscale_container.container_id)[2]
 }
 
 resource "null_resource" "update_cluster_config" {

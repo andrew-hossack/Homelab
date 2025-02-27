@@ -35,7 +35,9 @@ variable "proxy_sites" {
     target  = string
   }))
 }
-
+variable "gateway" {
+  description = "Gateway address"
+}
 variable "ssh_private_key" {
 }
 

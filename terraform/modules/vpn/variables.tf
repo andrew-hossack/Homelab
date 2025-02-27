@@ -27,3 +27,6 @@ variable "cluster_ip" {
   description = "IPv4 address for the cluster"
   
 }
+variable "gateway" {
+  description = "Gateway address"
+}

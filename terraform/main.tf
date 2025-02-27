@@ -8,12 +8,13 @@ terraform {
 }
 
 locals {
-  api_url                    = "https://10.9.6.162:8006/api2/json"
-  container_default_password = var.container_default_password
+  cluster_ip                 = "10.9.6.162"
+  gateway                    = "10.9.6.1"
+  network_cidr               = "10.9.6.0/24"
   ssh_private_key            = "~/.ssh/id_rsa"
   ssh_public_key             = "~/.ssh/id_rsa.pub"
-  network_cidr               = "10.9.6.0/24"
-  cluster_ip                 = "10.9.6.162"
+  api_url                    = "https://${local.cluster_ip}:8006/api2/json"
+  container_default_password = var.container_default_password
 }
 
 provider "proxmox" {
@@ -24,10 +25,10 @@ provider "proxmox" {
 }
 
 module "proxy" {
-  source = "./modules/proxy"
-
+  source          = "./modules/proxy"
   container_name  = "nginx-proxy"
   ipv4_cidr       = "10.9.6.100/24"
+  gateway         = local.gateway
   password        = local.container_default_password
   ssh_private_key = local.ssh_private_key
   ssh_public_key  = local.ssh_public_key
@@ -43,6 +44,7 @@ module "dns" {
   source          = "./modules/dns"
   container_name  = "pihole-dns"
   ipv4_cidr       = "10.9.6.101/24"
+  gateway         = local.gateway
   password        = local.container_default_password
   pihole_password = local.container_default_password
   ssh_private_key = local.ssh_private_key
@@ -54,6 +56,7 @@ module "vpn" {
   cluster_ip         = local.cluster_ip
   container_name     = "tailscale-vpn"
   ipv4_cidr          = "10.9.6.102/24"
+  gateway            = local.gateway
   password           = local.container_default_password
   advertise_routes   = local.network_cidr
   tailscale_auth_key = var.tailscale_auth_key
