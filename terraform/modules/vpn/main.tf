@@ -38,7 +38,7 @@ resource "null_resource" "update_cluster_config" {
     type        = "ssh"
     user        = "root"
     private_key = file(var.ssh_private_key)
-    host        = "10.9.6.162"
+    host        = var.cluster_ip
     timeout     = "60s"
   }
 

@@ -23,3 +23,7 @@ variable "ssh_public_key" {
 variable "tailscale_auth_key" {
   # https://login.tailscale.com/admin/settings/keys
 }
+variable "cluster_ip" {
+  description = "IPv4 address for the cluster"
+  
+}
