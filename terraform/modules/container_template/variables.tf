@@ -23,7 +23,7 @@ variable "gateway" {
 }
 variable "dns_address" {
   description = "DNS address to use"
-  nullable    = true
+  default = "1.1.1.1"
 }
 variable "storage_size" {
   description = "Storage size to assign"

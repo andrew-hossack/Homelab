@@ -29,6 +29,15 @@ module "proxy" {
   ]
 }
 
+module "dns" {
+  source = "./modules/dns"
+  
+  container_name = "pihole-dns"
+  password       = var.container_default_password
+  pihole_password = var.container_default_password
+  ipv4_cidr      = "10.9.6.101/24"
+}
+
 # output "proxy_ip" {
 #   value = module.proxy.container_ip
 # }

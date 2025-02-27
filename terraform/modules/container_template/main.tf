@@ -34,6 +34,7 @@ resource "proxmox_lxc" "container" {
 }
 
 resource "null_resource" "provisioning" {
+  depends_on = [ proxmox_lxc.container ]
   triggers = {
     commands_hash = sha256(join(",", var.provisioning_commands))
     container_id  = proxmox_lxc.container.id
