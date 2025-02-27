@@ -24,12 +24,14 @@ locals {
 }
 
 module "nginx_container" {
-  source = "../container_template"
-  node           = var.node
-  os_template    = var.os_template
-  container_name = var.container_name
-  password       = var.password
-  ipv4_cidr      = var.ipv4_cidr
-  dns_address    = var.dns_address
+  source                = "../container_template"
+  node                  = var.node
+  os_template           = var.os_template
+  container_name        = var.container_name
+  password              = var.password
+  ipv4_cidr             = var.ipv4_cidr
+  dns_address           = var.dns_address
   provisioning_commands = local.all_commands
+  ssh_private_key       = var.ssh_private_key
+  ssh_public_key        = var.ssh_public_key
 }

@@ -2,6 +2,8 @@ module "pihole_dns" {
   source         = "../container_template"
   container_name = var.container_name
   password       = var.password
+  ssh_private_key = var.ssh_private_key
+  ssh_public_key = var.ssh_public_key
   ipv4_cidr      = var.ipv4_cidr
   provisioning_commands = [
     <<-EOF

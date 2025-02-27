@@ -43,9 +43,7 @@ variable "provisioning_commands" {
 }
 variable "ssh_public_key" {
   description = "Local filepath to key from terraform local machine"
-  default = "~/.ssh/id_rsa.pub"
 }
 variable "ssh_private_key" {
   description = "Local filepath to key from terraform local machine"
-  default = "~/.ssh/id_rsa"
 }

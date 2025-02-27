@@ -16,8 +16,10 @@ variable "advertise_routes" {
 }
 variable "ssh_private_key" {
   description = "Local filepath to key from terraform local machine"
-  default = "~/.ssh/id_rsa"
+}
+variable "ssh_public_key" {
+  description = "Local filepath to key from terraform local machine"
 }
 variable "tailscale_auth_key" {
-  
+  # https://login.tailscale.com/admin/settings/keys
 }
