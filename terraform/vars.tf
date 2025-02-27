@@ -24,6 +24,9 @@ variable "token_secret" {
 variable "token_id" {
 }
 
-variable "container_default_password" {
+variable "container_default_password" { 
+}
+
+variable "tailscale_auth_key" {
   
 }

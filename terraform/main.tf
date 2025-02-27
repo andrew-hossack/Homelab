@@ -42,9 +42,14 @@ module "dns" {
 #   value = module.proxy.container_ip
 # }
 
-# module "vpn" {
-#   source = "./modules/vpn"
-# }
+module "vpn" {
+  source = "./modules/vpn"
+  container_name = "tailscale-vpn"
+  password = var.container_default_password
+  ipv4_cidr = "10.9.6.102/24"
+  advertise_routes = "10.9.6.0/24"
+  tailscale_auth_key = var.tailscale_auth_key
+}
 
 # module "dns" {
 #   source = "./modules/dns"
