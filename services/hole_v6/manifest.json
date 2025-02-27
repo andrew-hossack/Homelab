@@ -1,0 +1,11 @@
+{
+  "domain": "hole_v6",
+  "version": "0.1.0",
+  "name": "xyz-hole (v6)",
+  "codeowners": ["@user-08-151"],
+  "config_flow": true,
+  "documentation": "https://github.com/user-08-151/hole_v6",
+  "iot_class": "local_polling",
+  "loggers": ["hole_v6"],
+  "requirements": []
+}
