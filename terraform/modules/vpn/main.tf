@@ -18,7 +18,7 @@ module "tailscale_container" {
     apt-get install tailscale -y
     # Advertise a device as exit node
     echo 'net.ipv4.ip_forward = 1' | tee -a /etc/sysctl.d/99-tailscale.conf
-    echo 'net.ipv6.conf.all.forwarding = 1' | tee -a /etc/sysctl.d/99-tailscale.conf
+    # echo 'net.ipv6.conf.all.forwarding = 1' | tee -a /etc/sysctl.d/99-tailscale.conf
     sysctl -p /etc/sysctl.d/99-tailscale.conf
     EOF
   ]
@@ -69,11 +69,10 @@ resource "null_resource" "start_tailscale" {
   provisioner "remote-exec" {
     inline = [
       <<-EOF
+      systemctl restart tailscaled
       # Advertise subnet route and start tailscale
-      tailscale up --reset --advertise-routes=${var.advertise_routes} --advertise-exit-node --authkey=${var.tailscale_auth_key}
+      tailscale up --accept-dns=false --advertise-routes=${var.advertise_routes} --advertise-exit-node --authkey=${var.tailscale_auth_key}
       EOF
     ]
   }
 }
-
-
