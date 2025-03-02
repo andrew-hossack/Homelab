@@ -75,11 +75,17 @@ module "proxy" {
   ]
 }
 
+# module "uptime_kuma" {
+#   source = "./modules/uptime_kuma"
+# }
 
 # module "home_assistant" {
 #   source = "./modules/home_assistant"
 # }
 
-# module "uptime_kuma" {
-#   source = "./modules/uptime_kuma"
-# }
+
+# drone io cicd
+
+# kubernetes deployment
+# haproxy
+# consul

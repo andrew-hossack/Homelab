@@ -53,9 +53,8 @@ Using iDRAC, choose to boot into Normal system boot. Then, chose `ProxMox VE`. F
 ProxMox login:
 
 - Username: `root`
-- Password: ``
 
-Note that the email address used to sign up is ``. 
+Note that the email address used to sign up is `Andrew_hossack@outlook.com`. 
 
 The server is not using a static IP, and instead uses DHCP for IP assignment. TODO - Set up static IP addresses.
 
@@ -71,25 +70,14 @@ To change and add hosts, modify the `/etc/nginx/sites-available/reverse-proxy.co
 
 ### Pi Hole DNS (10.9.6.171)
 
-Admin page at http://10.9.6.171/admin with password: ``
+Admin page at http://10.9.6.171/admin 
 
-### Dynamic DNS Client (10.9.6.180)
-
-Manages dynamic changing DNS and provides a static hostname. Using with OpenVPN.
-
-u: ``
-
-p: ``
 
 ### Tailscale VPN
 
-Username:  (google login)
+Username: Andrew_hossack@outlook.com (google login)
 
 ### Uptime Kuma Dashboard
-
-u: 
-
-p: 
 
 ### Router Setup
 

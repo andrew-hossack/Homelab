@@ -12,7 +12,7 @@ locals {
     "apt-get install -y nginx",
     "systemctl enable nginx",
     "mkdir -p /etc/nginx/sites-available",
-    "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-custom.key -out /etc/ssl/certs/nginx-custom.crt -subj '/C=US/ST=UT/L=SLC/O=NA/OU=NA/CN=NA'"
+    "[ ! -f /etc/ssl/private/nginx-custom.key -o ! -f /etc/ssl/certs/nginx-custom.crt ] && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-custom.key -out /etc/ssl/certs/nginx-custom.crt -subj '/C=US/ST=UT/L=SLC/O=NA/OU=NA/CN=NA'"
   ]
 
   config_commands = [for site in var.proxy_sites :
