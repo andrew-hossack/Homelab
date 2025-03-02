@@ -24,3 +24,11 @@ variable "ssh_private_key" {
 variable "gateway" {
   description = "Gateway address eg. 10.9.6.1"
 }
+
+variable "custom_dns_hosts" {
+  description = "A list of custom DNS hostnames and their corresponding IP addresses"
+  type = list(object({
+    hostname = string
+    proxy    = string
+  }))
+}

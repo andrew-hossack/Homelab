@@ -11,16 +11,27 @@ locals {
     "apt-get update",
     "apt-get install -y nginx",
     "systemctl enable nginx",
-    "mkdir -p /etc/nginx/conf.d",
+    "mkdir -p /etc/nginx/sites-available",
+    "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-custom.key -out /etc/ssl/certs/nginx-custom.crt -subj '/C=US/ST=UT/L=SLC/O=NA/OU=NA/CN=NA'"
   ]
 
-  # Generate nginx configuration commands for each site
   config_commands = [for site in var.proxy_sites :
-    "cat > /etc/nginx/conf.d/${site.domain}.conf << 'EOL'\nserver {\n  listen 80;\n  server_name ${site.domain} ${site.aliases != null ? join(" ", site.aliases) : ""};\n\n  location / {\n    proxy_pass ${site.target};\n    proxy_set_header Host $host;\n    proxy_set_header X-Real-IP $remote_addr;\n    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n    proxy_set_header X-Forwarded-Proto $scheme;\n  }\n}\nEOL"
+    "echo '${templatefile("${path.module}/sites/${site.template}", {
+      target = site.target
+      hostname = site.hostname
+    })}' > /etc/nginx/sites-available/${site.template}"
   ]
 
-  # Combine all commands
-  all_commands = concat(local.base_commands, local.config_commands, ["nginx -t", "systemctl restart nginx"])
+  symlink_commands = [for site in var.proxy_sites :
+    "ln -sf /etc/nginx/sites-available/${site.template} /etc/nginx/sites-enabled/"
+  ]
+
+  restart_commands = [
+    "nginx -t",
+    "systemctl restart nginx"
+  ]
+
+  all_commands = concat(local.base_commands, local.config_commands, local.symlink_commands, local.restart_commands)
 }
 
 module "nginx_container" {

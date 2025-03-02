@@ -30,9 +30,9 @@ variable "dns_address" {
 variable "proxy_sites" {
   description = "List of sites to proxy"
   type = list(object({
-    domain  = string
-    aliases = optional(list(string))
+    template  = string
     target  = string
+    hostname =  string
   }))
 }
 variable "gateway" {
@@ -43,3 +43,4 @@ variable "ssh_private_key" {
 
 variable "ssh_public_key" {
 }
+

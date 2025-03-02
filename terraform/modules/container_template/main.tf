@@ -33,6 +33,8 @@ resource "proxmox_lxc" "container" {
   }
 }
 
+# todo consider breaking out each command into its own resource
+# so that we can directly affect file changes by command
 resource "null_resource" "provisioning" {
   depends_on = [ proxmox_lxc.container ]
   triggers = {
