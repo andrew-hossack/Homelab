@@ -8,65 +8,41 @@ module "pihole_dns" {
   gateway         = var.gateway
   provisioning_commands = [
     <<-EOF
-    # # Update and install required packages
-    # apt-get update && apt-get install -y curl
+    #!/bin/bash
 
-    # mkdir -p /etc/pihole/
-    # touch /etc/pihole/setupVars.conf
+    # Function to install Pi-hole
+    install_pihole() {
+        # Update and install required packages
+        apt-get update && apt-get install -y curl
 
-    # cat <<EOT > /etc/pihole/setupVars.conf
-    # export PIHOLE_INTERFACE=eth0
-    # export PIHOLE_STATIC_IP=${split("/", var.ipv4_cidr)[0]}
-    # export PIHOLE_DNS_1=8.8.8.8
-    # export PIHOLE_DNS_2=8.8.4.4
-    # export QUERY_LOGGING=true
-    # export INSTALL_WEB_INTERFACE=true
-    # EOT
+        mkdir -p /etc/pihole/
+        touch /etc/pihole/setupVars.conf
 
-    # # Install Pi-hole
-    # curl -L https://install.pi-hole.net | bash /dev/stdin --unattended
+        cat <<EOT > /etc/pihole/setupVars.conf
+    export PIHOLE_INTERFACE=eth0
+    export PIHOLE_STATIC_IP=${split("/", var.ipv4_cidr)[0]}
+    export PIHOLE_DNS_1=8.8.8.8
+    export PIHOLE_DNS_2=8.8.4.4
+    export QUERY_LOGGING=true
+    export INSTALL_WEB_INTERFACE=true
+    EOT
 
-    # # Set Pi-hole web interface password
-    # pihole setpassword ${var.pihole_password}
-    # pihole reloadlists
+        # Install Pi-hole
+        curl -L https://install.pi-hole.net | bash /dev/stdin --unattended
 
-    # # Install Unbound for recursive DNS
-    # # apt-get install -y unbound
+        # Set Pi-hole web interface password
+        pihole setpassword ${var.pihole_password}
+        pihole reloadlists
+        
+        echo "Pi-hole installation complete."
+    }
 
-    # # Configure Unbound
-    # # cat <<EOT > /etc/unbound/unbound.conf.d/pi-hole.conf
-    # # server:
-    # #     verbosity: 0
-    # #     interface: 127.0.0.1
-    # #     port: 5335
-    # #     do-ip4: yes
-    # #     do-udp: yes
-    # #     do-tcp: yes
-    # #     do-ip6: no
-    # #     prefer-ip6: no
-    # #     harden-glue: yes
-    # #     harden-dnssec-stripped: yes
-    # #     use-caps-for-id: no
-    # #     edns-buffer-size: 1472
-    # #     prefetch: yes
-    # #     num-threads: 1
-    # #     so-rcvbuf: 1m
-    # #     private-address: 192.168.0.0/16
-    # #     private-address: 172.16.0.0/12
-    # #     private-address: 10.0.0.0/8
-    # # forward-zone:
-    # #     name: "."
-    # #     forward-addr: 1.1.1.1@53#cloudflare-dns.com
-    # #     forward-addr: 1.0.0.1@53#cloudflare-dns.com
-    # # EOT
-
-    # # Restart Unbound
-    # # systemctl restart unbound
-
-    # # Configure Pi-hole to use Unbound
-    # # sed -i 's/PIHOLE_DNS_1=.*/PIHOLE_DNS_1=127.0.0.1#5335/' /etc/pihole/setupVars.conf
-    # # sed -i '/PIHOLE_DNS_2=/d' /etc/pihole/setupVars.conf
-
+    # Check if Pi-hole is already installed
+    if command -v pihole > /dev/null || [ -d "/etc/pihole" ]; then
+        echo "Pi-hole is already installed. Skipping installation."
+    else
+        install_pihole
+    fi
     EOF
     ,
     <<-EOF

@@ -32,7 +32,6 @@ variable "proxy_sites" {
   type = list(object({
     template  = string
     target  = string
-    hostname =  string
   }))
 }
 variable "gateway" {

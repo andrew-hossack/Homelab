@@ -18,7 +18,7 @@ locals {
   config_commands = [for site in var.proxy_sites :
     "echo '${templatefile("${path.module}/sites/${site.template}", {
       target = site.target
-      hostname = site.hostname
+      hostname = site.template
     })}' > /etc/nginx/sites-available/${site.template}"
   ]
 
