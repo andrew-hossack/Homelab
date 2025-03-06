@@ -8,9 +8,9 @@ terraform {
 }
 
 locals {
-  cluster_ip                 = "10.9.6.162"
-  gateway                    = "10.9.6.1"
-  network_cidr               = "10.9.6.0/24"
+  cluster_ip   = "10.9.6.162"
+  gateway      = "10.9.6.1"
+  network_cidr = "10.9.6.0/24"
   # Local ssh files from your local machine
   ssh_private_key            = "~/.ssh/id_rsa"
   ssh_public_key             = "~/.ssh/id_rsa.pub"
@@ -26,9 +26,9 @@ provider "proxmox" {
 
 module "vpn" {
   source             = "./modules/vpn"
-  cluster_ip         = local.cluster_ip
   container_name     = "tailscale-vpn"
   ipv4_cidr          = "10.9.6.102/24"
+  cluster_ip         = local.cluster_ip
   gateway            = local.gateway
   password           = local.container_default_password
   advertise_routes   = local.network_cidr
@@ -38,10 +38,21 @@ module "vpn" {
 }
 
 module "uptime-kuma" {
-  source = "./modules/uptime-kuma"
+  source          = "./modules/uptime-kuma"
   container_name  = "uptime-kuma"
   ipv4_cidr       = "10.9.6.103/24"
   gateway         = local.gateway
+  password        = local.container_default_password
+  ssh_private_key = local.ssh_private_key
+  ssh_public_key  = local.ssh_public_key
+}
+
+module "home-assistant" {
+  source          = "./modules/home-assistant"
+  container_name  = "home-assistant"
+  ipv4_cidr       = "10.9.6.104/24"
+  cluster_ip      = local.cluster_ip
+  gateway_cidr    = "${local.gateway}/24"
   password        = local.container_default_password
   ssh_private_key = local.ssh_private_key
   ssh_public_key  = local.ssh_public_key
@@ -87,10 +98,6 @@ module "proxy" {
     },
   ]
 }
-
-# module "home_assistant" {
-#   source = "./modules/home_assistant"
-# }
 
 
 # drone io cicd

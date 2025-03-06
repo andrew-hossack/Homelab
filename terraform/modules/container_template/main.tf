@@ -36,6 +36,7 @@ resource "proxmox_lxc" "container" {
 # TODO consider breaking out each command into its own layer
 # so that we can directly affect file changes by command
 resource "null_resource" "provisioning" {
+  count = var.provisioning_commands != null ? 1 : 0
   depends_on = [ proxmox_lxc.container ]
   triggers = {
     commands_hash = sha256(join(",", var.provisioning_commands))
@@ -51,6 +52,6 @@ resource "null_resource" "provisioning" {
   }
 
   provisioner "remote-exec" {
-    inline = var.provisioning_commands
+    inline = var.provisioning_commands != null ? var.provisioning_commands: ["#nop"]
   }
 }

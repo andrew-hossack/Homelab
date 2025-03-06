@@ -12,7 +12,7 @@ variable "password" {
   description = "Password for the container"
 }
 variable "memory" {
-  default = "512"
+  default     = "512"
   description = "A number containing the amount of RAM to assign to the container (in MB)."
 }
 variable "ipv4_cidr" {
@@ -23,7 +23,7 @@ variable "gateway" {
 }
 variable "dns_address" {
   description = "DNS address to use"
-  default = "1.1.1.1"
+  default     = "1.1.1.1"
 }
 variable "storage_size" {
   description = "Storage size to assign"
@@ -40,6 +40,8 @@ variable "cores" {
 variable "provisioning_commands" {
   description = "List of commands to run during provisioning"
   type        = list(string)
+  default     = null
+  nullable    = true
 }
 variable "ssh_public_key" {
   description = "Local filepath to key from terraform local machine"
