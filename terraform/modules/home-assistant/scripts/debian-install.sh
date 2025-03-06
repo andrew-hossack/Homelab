@@ -10,7 +10,7 @@ color
 verb_ip6
 catch_errors
 setting_up_container
-network_check
+# network_check disable bc its broken
 update_os
 
 msg_info "Installing Dependencies"
