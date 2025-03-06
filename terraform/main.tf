@@ -97,10 +97,10 @@ module "proxy" {
       template = "status.lan"
       target   = "http://${module.uptime-kuma.container_ip}:3001"
     },
-    # {
-    #   template = "homeassistant.lan"
-    #   target   = "http://${module.home-assistant.container_ip}:8123"
-    # },
+    {
+      template = "homeassistant.lan"
+      target   = "http://${module.home-assistant.container_ip}:8123"
+    },
   ]
 }
 
