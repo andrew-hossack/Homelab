@@ -9,7 +9,6 @@ resource "null_resource" "update_cluster_config" {
     private_key = file(var.ssh_private_key)
     host        = var.cluster_ip
     timeout     = "60s"
-    # Don't specify script_path here
     agent           = false
     target_platform = "unix"
   }

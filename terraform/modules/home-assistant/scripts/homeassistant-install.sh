@@ -28,7 +28,7 @@ catch_errors() {
 
 # This function is called when an error occurs. It receives the exit code, line number, and command that caused the error, and displays an error message.
 error_handler() {
-  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID > /dev/null; then kill $SPINNER_PID > /dev/null; fi
+  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID >/dev/null; then kill $SPINNER_PID >/dev/null; fi
   printf "\e[?25h"
   local exit_code="$?"
   local line_number="$1"
@@ -39,13 +39,13 @@ error_handler() {
 
 # This function displays a spinner.
 spinner() {
-    local chars="/-\|"
-    local spin_i=0
-    printf "\e[?25l"
-    while true; do
-        printf "\r \e[36m%s\e[0m" "${chars:spin_i++%${#chars}:1}"
-        sleep 0.1
-    done
+  local chars="/-\|"
+  local spin_i=0
+  printf "\e[?25l"
+  while true; do
+    printf "\r \e[36m%s\e[0m" "${chars:spin_i++%${#chars}:1}"
+    sleep 0.1
+  done
 }
 
 # This function displays an informational message with a yellow color.
@@ -58,7 +58,7 @@ msg_info() {
 
 # This function displays a success message with a green color.
 msg_ok() {
-  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID > /dev/null; then kill $SPINNER_PID > /dev/null; fi
+  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID >/dev/null; then kill $SPINNER_PID >/dev/null; fi
   printf "\e[?25h"
   local msg="$1"
   echo -e "${BFR} ${CM} ${GN}${msg}${CL}"
@@ -66,7 +66,7 @@ msg_ok() {
 
 # This function displays a error message with a red color.
 msg_error() {
-  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID > /dev/null; then kill $SPINNER_PID > /dev/null; fi
+  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID >/dev/null; then kill $SPINNER_PID >/dev/null; fi
   printf "\e[?25h"
   local msg="$1"
   echo -e "${BFR} ${CROSS} ${RD}${msg}${CL}"
@@ -102,7 +102,7 @@ pve_check() {
     echo -e "Exiting..."
     sleep 2
     exit
-fi
+  fi
 }
 
 # This function checks the system architecture and exits if it's not "amd64".
@@ -259,7 +259,6 @@ advanced_settings() {
       exit-script
     fi
   done
-
 
   if CT_ID=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Set Container ID" 8 58 $NEXTID --title "CONTAINER ID" 3>&1 1>&2 2>&3); then
     if [ -z "$CT_ID" ]; then
@@ -491,15 +490,15 @@ install_script() {
   NEXTID=$(pvesh get /cluster/nextid)
   timezone=$(cat /etc/timezone)
   header_info
-#   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "SETTINGS" --yesno "Use Default Settings?" --no-button Advanced 10 58); then
+  #   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "SETTINGS" --yesno "Use Default Settings?" --no-button Advanced 10 58); then
   header_info
   echo -e "${BL}Using Default Settings${CL}"
   default_settings
-#   else
-#     header_info
-#     echo -e "${RD}Using Advanced Settings${CL}"
-#     advanced_settings
-#   fi
+  #   else
+  #     header_info
+  #     echo -e "${RD}Using Advanced Settings${CL}"
+  #     advanced_settings
+  #   fi
 }
 
 start() {
@@ -526,14 +525,13 @@ start() {
 
 # This function collects user settings and integrates all the collected information.
 build_container() {
-#  if [ "$VERB" == "yes" ]; then set -x; fi
+  #  if [ "$VERB" == "yes" ]; then set -x; fi
 
   if [ "$CT_TYPE" == "1" ]; then
     FEATURES="keyctl=1,nesting=1"
   else
     FEATURES="nesting=1"
   fi
-
 
   TEMP_DIR=$(mktemp -d)
   pushd $TEMP_DIR >/dev/null
@@ -597,107 +595,107 @@ build_container() {
 
   # This function handles errors
   function error_handler() {
-  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID > /dev/null; then kill $SPINNER_PID > /dev/null; fi
-  printf "\e[?25h"
-  local exit_code="$?"
-  local line_number="$1"
-  local command="$2"
-  local error_message="${RD}[ERROR]${CL} in line ${RD}$line_number${CL}: exit code ${RD}$exit_code${CL}: while executing command ${YW}$command${CL}"
-  echo -e "\n$error_message\n"
+    if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID >/dev/null; then kill $SPINNER_PID >/dev/null; fi
+    printf "\e[?25h"
+    local exit_code="$?"
+    local line_number="$1"
+    local command="$2"
+    local error_message="${RD}[ERROR]${CL} in line ${RD}$line_number${CL}: exit code ${RD}$exit_code${CL}: while executing command ${YW}$command${CL}"
+    echo -e "\n$error_message\n"
   }
 
   # This function displays a spinner.
   function spinner() {
-  local chars="/-\|"
-  local spin_i=0
-  printf "\e[?25l"
-  while true; do
-  printf "\r \e[36m%s\e[0m" "${chars:spin_i++%${#chars}:1}"
-  sleep 0.1
-  done
+    local chars="/-\|"
+    local spin_i=0
+    printf "\e[?25l"
+    while true; do
+      printf "\r \e[36m%s\e[0m" "${chars:spin_i++%${#chars}:1}"
+      sleep 0.1
+    done
   }
 
   # This function displays an informational message with a yellow color.
   function msg_info() {
-  local msg="$1"
-  echo -ne " ${HOLD} ${YW}${msg}   "
-  spinner &
-  SPINNER_PID=$!
+    local msg="$1"
+    echo -ne " ${HOLD} ${YW}${msg}   "
+    spinner &
+    SPINNER_PID=$!
   }
 
   # This function displays a success message with a green color.
   function msg_ok() {
-  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID > /dev/null; then kill $SPINNER_PID > /dev/null; fi
-  printf "\e[?25h"
-  local msg="$1"
-  echo -e "${BFR} ${CM} ${GN}${msg}${CL}"
+    if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID >/dev/null; then kill $SPINNER_PID >/dev/null; fi
+    printf "\e[?25h"
+    local msg="$1"
+    echo -e "${BFR} ${CM} ${GN}${msg}${CL}"
   }
 
   # This function displays a error message with a red color.
   function msg_error() {
-  if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID > /dev/null; then kill $SPINNER_PID > /dev/null; fi
-  printf "\e[?25h"
-  local msg="$1"
-  echo -e "${BFR} ${CROSS} ${RD}${msg}${CL}"
+    if [ -n "$SPINNER_PID" ] && ps -p $SPINNER_PID >/dev/null; then kill $SPINNER_PID >/dev/null; fi
+    printf "\e[?25h"
+    local msg="$1"
+    echo -e "${BFR} ${CROSS} ${RD}${msg}${CL}"
   }
 
   # This checks for the presence of valid Container Storage and Template Storage locations
   msg_info "Validating Storage"
   VALIDCT=$(pvesm status -content rootdir | awk 'NR>1')
   if [ -z "$VALIDCT" ]; then
-  msg_error "Unable to detect a valid Container Storage location."
-  exit 1
+    msg_error "Unable to detect a valid Container Storage location."
+    exit 1
   fi
   VALIDTMP=$(pvesm status -content vztmpl | awk 'NR>1')
   if [ -z "$VALIDTMP" ]; then
-  msg_error "Unable to detect a valid Template Storage location."
-  exit 1
+    msg_error "Unable to detect a valid Template Storage location."
+    exit 1
   fi
 
   # This function is used to select the storage class and determine the corresponding storage content type and label.
   function select_storage() {
-  local CLASS=$1
-  local CONTENT
-  local CONTENT_LABEL
-  case $CLASS in
-  container)
-  CONTENT='rootdir'
-  CONTENT_LABEL='Container'
-  ;;
-  template)
-  CONTENT='vztmpl'
-  CONTENT_LABEL='Container template'
-  ;;
-  *) false || exit "Invalid storage class." ;;
-  esac
+    local CLASS=$1
+    local CONTENT
+    local CONTENT_LABEL
+    case $CLASS in
+    container)
+      CONTENT='rootdir'
+      CONTENT_LABEL='Container'
+      ;;
+    template)
+      CONTENT='vztmpl'
+      CONTENT_LABEL='Container template'
+      ;;
+    *) false || exit "Invalid storage class." ;;
+    esac
 
-  # This Queries all storage locations
-  local -a MENU
-  while read -r line; do
-  local TAG=$(echo $line | awk '{print $1}')
-  local TYPE=$(echo $line | awk '{printf "%-10s", $2}')
-  local FREE=$(echo $line | numfmt --field 4-6 --from-unit=K --to=iec --format %.2f | awk '{printf( "%9sB", $6)}')
-  local ITEM="  Type: $TYPE Free: $FREE "
-  local OFFSET=2
-  if [[ $((${#ITEM} + $OFFSET)) -gt ${MSG_MAX_LENGTH:-} ]]; then
-  local MSG_MAX_LENGTH=$((${#ITEM} + $OFFSET))
-  fi
-  MENU+=("$TAG" "$ITEM" "OFF")
-  done < <(pvesm status -content $CONTENT | awk 'NR>1')
+    # This Queries all storage locations
+    local -a MENU
+    while read -r line; do
+      local TAG=$(echo $line | awk '{print $1}')
+      local TYPE=$(echo $line | awk '{printf "%-10s", $2}')
+      local FREE=$(echo $line | numfmt --field 4-6 --from-unit=K --to=iec --format %.2f | awk '{printf( "%9sB", $6)}')
+      local ITEM="  Type: $TYPE Free: $FREE "
+      local OFFSET=2
+      if [[ $((${#ITEM} + $OFFSET)) -gt ${MSG_MAX_LENGTH:-} ]]; then
+        local MSG_MAX_LENGTH=$((${#ITEM} + $OFFSET))
+      fi
+      MENU+=("$TAG" "$ITEM" "OFF")
+    done < <(pvesm status -content $CONTENT | awk 'NR>1')
 
-  # Select storage location
-  if [ $((${#MENU[@]}/3)) -eq 1 ]; then
-  printf ${MENU[0]}
-  else
-  local STORAGE
-  while [ -z "${STORAGE:+x}" ]; do
-  STORAGE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Storage Pools" --radiolist \
-  "Which storage pool you would like to use for the ${CONTENT_LABEL,,}?\nTo make a selection, use the Spacebar.\n" \
-  16 $(($MSG_MAX_LENGTH + 23)) 6 \
-  "${MENU[@]}" 3>&1 1>&2 2>&3) || exit "Menu aborted."
-  done
-  printf $STORAGE
-  fi
+    # Select storage location
+    if [ $((${#MENU[@]} / 3)) -eq 1 ]; then
+      printf ${MENU[0]}
+    else
+      local STORAGE
+      while [ -z "${STORAGE:+x}" ]; do
+        STORAGE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Storage Pools" --radiolist \
+          "Which storage pool you would like to use for the ${CONTENT_LABEL,,}?\nTo make a selection, use the Spacebar.\n" \
+          16 $(($MSG_MAX_LENGTH + 23)) 6 \
+          "${MENU[@]}" 3>&1 1>&2 2>&3) || exit "Menu aborted."
+      done
+      printf $STORAGE
+    fi
   }
 
   # Test if required variables are set
@@ -709,9 +707,9 @@ build_container() {
 
   # Test if ID is in use
   if pct status $CTID &>/dev/null; then
-  echo -e "ID '$CTID' is already in use."
-  unset CTID
-  exit "Cannot use ID that is already in use."
+    echo -e "ID '$CTID' is already in use."
+    unset CTID
+    exit "Cannot use ID that is already in use."
   fi
 
   # Get template storage
@@ -735,15 +733,15 @@ build_container() {
 
   # Download LXC template if needed
   if ! pveam list $TEMPLATE_STORAGE | grep -q $TEMPLATE; then
-  msg_info "Downloading LXC Template"
-  pveam download $TEMPLATE_STORAGE $TEMPLATE >/dev/null ||
-  exit "A problem occured while downloading the LXC template."
-  msg_ok "Downloaded LXC Template"
+    msg_info "Downloading LXC Template"
+    pveam download $TEMPLATE_STORAGE $TEMPLATE >/dev/null ||
+      exit "A problem occured while downloading the LXC template."
+    msg_ok "Downloaded LXC Template"
   fi
 
   # Combine all options
   DEFAULT_PCT_OPTIONS=(
-  -arch $(dpkg --print-architecture))
+    -arch $(dpkg --print-architecture))
 
   PCT_OPTIONS=(${PCT_OPTIONS[@]:-${DEFAULT_PCT_OPTIONS[@]}})
   [[ " ${PCT_OPTIONS[@]} " =~ " -rootfs " ]] || PCT_OPTIONS+=(-rootfs $CONTAINER_STORAGE:${PCT_DISK_SIZE:-8})
@@ -751,7 +749,7 @@ build_container() {
   # Create container
   msg_info "Creating LXC Container"
   pct create $CTID ${TEMPLATE_STORAGE}:vztmpl/${TEMPLATE} ${PCT_OPTIONS[@]} >/dev/null ||
-  exit "A problem occured while trying to create container."
+    exit "A problem occured while trying to create container."
   msg_ok "LXC Container ${BL}$CTID${CL} ${GN}was successfully created."
 
   LXC_CONFIG=/etc/pve/lxc/${CTID}.conf
@@ -811,7 +809,7 @@ EOF
   sleep 10
   if [ "$var_os" == "alpine" ]; then
     sleep 3
-        pct exec "$CTID" -- /bin/sh -c 'cat <<EOF >/etc/apk/repositories
+    pct exec "$CTID" -- /bin/sh -c 'cat <<EOF >/etc/apk/repositories
 http://dl-cdn.alpinelinux.org/alpine/latest-stable/main
 http://dl-cdn.alpinelinux.org/alpine/latest-stable/community
 #http://dl-cdn.alpinelinux.org/alpine/v3.19/main
@@ -819,7 +817,8 @@ http://dl-cdn.alpinelinux.org/alpine/latest-stable/community
 EOF'
     pct exec "$CTID" -- ash -c "apk add bash >/dev/null"
   fi
-  lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/andrew-hossack/Homelab/refs/heads/main/terraform/modules/home-assistant/scripts/debian-installer.sh)" || exit
+  # lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/andrew-hossack/Homelab/refs/heads/main/terraform/modules/home-assistant/scripts/debian-installer.sh)" || exit
+  lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/andrew-hossack/Homelab/refs/heads/main/terraform/modules/home-assistant/scripts/homeassistant-utils.sh)" || exit
 
 }
 

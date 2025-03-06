@@ -71,6 +71,7 @@ module "dns" {
     { hostname = "pihole.lan", proxy = "10.9.6.100" },
     { hostname = "proxmox.lan", proxy = "10.9.6.100" },
     { hostname = "status.lan", proxy = "10.9.6.100" },
+    { hostname = "homeassistant.lan", proxy = "10.9.6.100" },
   ]
 }
 
@@ -96,6 +97,10 @@ module "proxy" {
       template = "status.lan"
       target   = "http://${module.uptime-kuma.container_ip}:3001"
     },
+    # {
+    #   template = "homeassistant.lan"
+    #   target   = "http://${module.home-assistant.container_ip}:8123"
+    # },
   ]
 }
 
