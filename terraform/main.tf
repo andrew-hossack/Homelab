@@ -8,10 +8,9 @@ terraform {
 }
 
 locals {
-  cluster_ip   = "10.9.6.162"
-  gateway      = "10.9.6.1"
-  network_cidr = "10.9.6.0/24"
-  # Local ssh files from your local machine
+  cluster_ip                 = "10.9.6.162"
+  gateway                    = "10.9.6.1"
+  network_cidr               = "10.9.6.0/24"
   ssh_private_key            = "~/.ssh/id_rsa"
   ssh_public_key             = "~/.ssh/id_rsa.pub"
   container_default_password = var.container_default_password
@@ -47,15 +46,17 @@ module "uptime-kuma" {
   ssh_public_key  = local.ssh_public_key
 }
 
-module "home-assistant" {
-  source          = "./modules/home-assistant"
-  container_name  = "home-assistant"
-  ipv4_cidr       = "10.9.6.104/24"
+module "home-assistant-os-vm" {
+  source = "./modules/home-assistant-os-vm"
   cluster_ip      = local.cluster_ip
-  gateway_cidr    = "${local.gateway}/24"
-  password        = local.container_default_password
   ssh_private_key = local.ssh_private_key
   ssh_public_key  = local.ssh_public_key
+  # IP Settings unable to be set by install
+  # TODO - set static IP
+  # Currently the address is set to http://homeassistant.local:8123/
+  # https://blog.ktz.me/set-a-static-ip-address-in-home-assistant-os/
+  # ipv4_cidr       = "10.9.6.104/24"
+  # gateway_cidr    = "${local.gateway}/24"
 }
 
 module "dns" {
@@ -99,7 +100,7 @@ module "proxy" {
     },
     {
       template = "homeassistant.lan"
-      target   = "http://${module.home-assistant.container_ip}:8123"
+      target   = "http://10.9.6.182:8123"
     },
   ]
 }
