@@ -23,6 +23,18 @@ provider "proxmox" {
   pm_tls_insecure     = true
 }
 
+module "k8s" {
+  source           = "./modules/k8s"
+  gateway_vm_name  = "k8s-gateway"
+  ipv4_cidr        = "10.9.6.105/24"
+  cluster_ip       = local.cluster_ip
+  gateway          = local.gateway
+  advertise_routes = local.network_cidr
+  ssh_private_key  = local.ssh_private_key
+  ssh_public_key   = local.ssh_public_key
+}
+
+
 module "vpn" {
   source             = "./modules/vpn"
   container_name     = "tailscale-vpn"
@@ -47,7 +59,7 @@ module "uptime-kuma" {
 }
 
 module "home-assistant-os-vm" {
-  source = "./modules/home-assistant-os-vm"
+  source          = "./modules/home-assistant-os-vm"
   cluster_ip      = local.cluster_ip
   ssh_private_key = local.ssh_private_key
   ssh_public_key  = local.ssh_public_key
